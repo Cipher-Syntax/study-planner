@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Platform, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Trash2, CheckCircle2, Circle } from 'lucide-react-native';
+import { useFocusEffect } from '@react-navigation/native'; // ✅ Add this
 
 const Schedule = () => {
     const [title, setTitle] = useState('');
@@ -14,13 +15,18 @@ const Schedule = () => {
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date());
 
-    useEffect(() => {
-        const loadTasks = async () => {
-            const saved = await AsyncStorage.getItem('TASKS');
-            if (saved) setTasks(JSON.parse(saved));
-        };
-        loadTasks();
-    }, []);
+    const loadTasks = async () => {
+        const saved = await AsyncStorage.getItem('TASKS');
+        if (saved) setTasks(JSON.parse(saved));
+        else setTasks([]);
+    };
+
+    // ✅ Automatically reload tasks whenever this screen regains focus
+    useFocusEffect(
+        useCallback(() => {
+            loadTasks();
+        }, [])
+    );
 
     const onChangeDate = (event, date) => {
         setShowDatePicker(Platform.OS === 'ios');
@@ -69,11 +75,15 @@ const Schedule = () => {
             "Are you sure you want to delete this task?",
             [
                 { text: "Cancel", style: "cancel" },
-                { text: "Delete", style: "destructive", onPress: async () => {
-                    const updatedTasks = tasks.filter(task => task.id !== id);
-                    setTasks(updatedTasks);
-                    await AsyncStorage.setItem('TASKS', JSON.stringify(updatedTasks));
-                }}
+                {
+                    text: "Delete",
+                    style: "destructive",
+                    onPress: async () => {
+                        const updatedTasks = tasks.filter(task => task.id !== id);
+                        setTasks(updatedTasks);
+                        await AsyncStorage.setItem('TASKS', JSON.stringify(updatedTasks));
+                    }
+                }
             ]
         );
     };
@@ -89,12 +99,11 @@ const Schedule = () => {
 
     const getDeadlineColor = (taskDate) => {
         const today = new Date().toISOString().split('T')[0];
-        if (taskDate === today) return { bg: '#f97316', text: '#fff' }; // Orange for today
-        if (taskDate > today) return { bg: '#16a34a', text: '#fff' };   // Green for upcoming
-        if (taskDate < today) return { bg: '#ef4444', text: '#fff' };   // Red for overdue
+        if (taskDate === today) return { bg: '#f97316', text: '#fff' };
+        if (taskDate > today) return { bg: '#16a34a', text: '#fff' };
+        if (taskDate < today) return { bg: '#ef4444', text: '#fff' };
     };
 
-    // Separate tasks by category
     const today = new Date().toISOString().split('T')[0];
     const todaysTasks = tasks.filter(task => task.deadline === today);
     const upcomingTasks = tasks.filter(task => task.deadline > today);
@@ -183,7 +192,6 @@ const Schedule = () => {
                 <Text style={styles.buttonText}>Add Task</Text>
             </TouchableOpacity>
 
-            {/* Schedule Overview */}
             {todaysTasks.length > 0 && (
                 <>
                     <Text style={styles.sectionHeader}>Today's Tasks</Text>
@@ -202,28 +210,104 @@ const Schedule = () => {
                     {renderTasks(overdueTasks)}
                 </>
             )}
-            {tasks.length === 0 && <Text style={{ textAlign: 'center', color: '#9ca3af', marginTop: 20 }}>No tasks yet.</Text>}
+            {tasks.length === 0 && (
+                <Text style={{ textAlign: 'center', color: '#9ca3af', marginTop: 20 }}>
+                    No tasks yet.
+                </Text>
+            )}
         </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: { padding: 20, backgroundColor: '#fff', paddingBottom: 50 },
-    heading: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-    sectionHeader: { fontSize: 20, fontWeight: 'bold', marginTop: 20, marginBottom: 12, color: '#1f2937' },
-    input: { borderWidth: 1, borderColor: '#ccc', borderRadius: 8, padding: 12, marginBottom: 12, fontSize: 16 },
-    button: { backgroundColor: '#3b82f6', padding: 14, borderRadius: 8, alignItems: 'center', marginBottom: 20 },
-    buttonText: { color: '#fff', fontWeight: 'bold', fontSize: 16 },
-    taskCard: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 8, borderWidth: 1, borderColor: '#e5e7eb', padding: 16, marginBottom: 12 },
-    checkbox: { marginRight: 12 },
-    taskDetails: { flex: 1, marginRight: 12 },
-    taskTitle: { fontWeight: '600', fontSize: 14, color: '#111827' },
-    completedTitle: { textDecorationLine: 'line-through', color: '#9ca3af' },
-    taskNotes: { fontSize: 12, color: '#4b5563', marginTop: 4 },
-    tagDeadlineRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8, gap: 8 },
-    tag: { paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4 },
-    tagText: { fontSize: 11, fontWeight: '600' },
-    deleteButton: { padding: 8 }
+    container: {
+        padding: 20,
+        backgroundColor: '#fff',
+        paddingBottom: 50
+    },
+    heading: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        textAlign: 'center'
+    },
+    sectionHeader: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginTop: 20,
+        marginBottom: 12,
+        color: '#1f2937'
+    },
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 8,
+        padding: 12,
+        marginBottom: 12,
+        fontSize: 16
+    },
+    button: {
+        backgroundColor: '#3b82f6',
+        padding: 14,
+        borderRadius: 8,
+        alignItems: 'center',
+        marginBottom: 20
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 16
+    },
+    taskCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        borderWidth: 1,
+        borderColor: '#e5e7eb',
+        padding: 16,
+        marginBottom: 12
+    },
+    checkbox: {
+        marginRight: 12
+    },
+    taskDetails: {
+        flex: 1,
+        marginRight: 12
+    },
+    taskTitle: {
+        fontWeight: '600',
+        fontSize: 14,
+        color: '#111827'
+    },
+    completedTitle: {
+        textDecorationLine: 'line-through',
+        color: '#9ca3af'
+    },
+    taskNotes: {
+        fontSize: 12,
+        color: '#4b5563',
+        marginTop: 4
+    },
+    tagDeadlineRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 8,
+        gap: 8
+    },
+    tag: {
+        paddingHorizontal: 8,
+        paddingVertical: 4,
+        borderRadius: 4
+    },
+    tagText: {
+        fontSize: 11,
+        fontWeight: '600'
+    },
+    deleteButton: {
+        padding: 8
+    }
 });
+
 
 export default Schedule;

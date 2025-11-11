@@ -12,7 +12,6 @@ const Home = () => {
     const [tasks, setTasks] = useState([]);
     const [selectedDate, setSelectedDate] = useState("all");
 
-    // Initial load
     useEffect(() => {
         const loadTasks = async () => {
             const saved = await AsyncStorage.getItem('TASKS');
@@ -25,7 +24,6 @@ const Home = () => {
         loadTasks();
     }, []);
 
-    // Reload tasks whenever screen is focused
     useFocusEffect(
         useCallback(() => {
             const reloadTasks = async () => {
@@ -35,6 +33,7 @@ const Home = () => {
             reloadTasks();
         }, [])
     );
+
 
     const filteredTasks = selectedDate === "all" ? tasks : tasks.filter(task => task.deadline === selectedDate);
 

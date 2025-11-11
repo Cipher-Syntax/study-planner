@@ -37,6 +37,7 @@ const AuthForm = () => {
         //             Alert.alert('Error', 'Incorrect password');
         //             return;
         //         }
+        //         await AsyncStorage.setItem('loggedInUser', JSON.stringify(parsedUser));
         //         if (remember) await AsyncStorage.setItem('loggedInUser', username);
 
         //         router.replace('/(tabs)');

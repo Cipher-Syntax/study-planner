@@ -15,7 +15,6 @@ const TaskDetails = () => {
     const [tag, setTag] = useState(task?.tag || '');
     const [deadline, setDeadline] = useState(task?.deadline || '');
 
-    // Load tasks from AsyncStorage
     useEffect(() => {
         const loadTasks = async () => {
             const saved = await AsyncStorage.getItem('TASKS');
@@ -93,17 +92,77 @@ const TaskDetails = () => {
 };
 
 const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#f9fafb' },
-    emptyContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    emptyText: { color: '#9ca3af', fontSize: 16 },
-    header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-    title: { fontSize: 24, fontWeight: '900', color: '#111827', flex: 1, borderBottomWidth: 1, borderColor: '#e5e7eb', paddingVertical: 4 },
-    actions: { flexDirection: 'row', gap: 10 },
-    editButton: { padding: 8, borderRadius: 8, backgroundColor: '#e0f2fe' },
-    deleteButton: { padding: 8, borderRadius: 8, backgroundColor: '#fee2e2' },
-    detailsCard: { backgroundColor: '#fff', borderRadius: 16, padding: 20, shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 8, shadowOffset: { width: 0, height: 3 }, elevation: 2 },
-    label: { fontSize: 12, fontWeight: '700', color: '#6b7280', marginTop: 12 },
-    value: { fontSize: 14, color: '#111827', marginTop: 4, padding: 8, borderWidth: 1, borderColor: '#e5e7eb', borderRadius: 8 }
+    container: {
+        flex: 1,
+        backgroundColor: '#f9fafb'
+    },
+    emptyContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    emptyText: {
+        color: '#9ca3af',
+        fontSize: 16
+    },
+    header: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 20
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: '900',
+        color: '#111827',
+        flex: 1,
+        borderBottomWidth: 1,
+        borderColor: '#e5e7eb',
+        paddingVertical: 4
+    },
+    actions: {
+        flexDirection: 'row',
+        gap: 10
+    },
+    editButton: {
+        padding: 8,
+        borderRadius: 8,
+        backgroundColor: '#e0f2fe'
+    },
+    deleteButton: {
+        padding: 8,
+        borderRadius: 8,
+        backgroundColor: '#fee2e2'
+    },
+    detailsCard: {
+        backgroundColor: '#fff',
+        borderRadius: 16,
+        padding: 20,
+        shadowColor: '#000',
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        elevation: 2
+    },
+    label: {
+        fontSize: 12,
+        fontWeight: '700',
+        color: '#6b7280',
+        marginTop: 12
+    },
+    value: {
+        fontSize: 14,
+        color: '#111827',
+        marginTop: 4,
+        padding: 8,
+        borderWidth: 1,
+        borderColor: '#e5e7eb',
+        borderRadius: 8
+    }
 });
+
 
 export default TaskDetails;
