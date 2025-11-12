@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Calendar, Bell } from 'lucide-react-native';
@@ -7,6 +7,7 @@ import { useRouter, useFocusEffect } from 'expo-router'; // ✅ import useFocusE
 const Header = () => {
     const router = useRouter();
     const [hasOverdue, setHasOverdue] = useState(false);
+    const [user, setUser] = useState(null);
 
     const checkOverdue = async () => {
         const saved = await AsyncStorage.getItem('TASKS');
@@ -19,7 +20,27 @@ const Header = () => {
             setHasOverdue(false);
         }
     };
-    
+
+    useFocusEffect(
+        useCallback(() => {
+            const loadData = async () => {
+                try{
+                    const loggedInUsername = await AsyncStorage.getItem('loggedInUser');
+                    if(loggedInUsername){
+                        const saveUser = await AsyncStorage.getItem(loggedInUsername)
+
+                        if(saveUser) setUser(JSON.parse(saveUser));
+                    }
+                }
+                catch(error){
+                    console.log('Error fetching user: ', error);
+                }
+            }
+
+            loadData();
+        }, [])
+    )
+
     useFocusEffect(
         useCallback(() => {
             checkOverdue();
@@ -41,7 +62,7 @@ const Header = () => {
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <View>
                     <Text style={{ fontSize: 30, marginTop: 10, fontWeight: 900, letterSpacing: 3 }}>
-                        Hey, Cipher 👋
+                        Hey, {user?.username || "No Name"} 👋
                     </Text>
                     <Text>Organize your tasks, boost your productivity</Text>
                 </View>

@@ -8,10 +8,10 @@ import { useFocusEffect } from '@react-navigation/native';
 const Profile = () => {
     const router = useRouter();
 
-    const [user, setUser] = useState(null); // initially null to detect loading
+    const [user, setUser] = useState(null);
     const [tasksCompleted, setTasksCompleted] = useState(0);
     const [overdueTasks, setOverdueTasks] = useState(0);
-    const [loading, setLoading] = useState(true); // loading state
+    const [loading, setLoading] = useState(true);
 
     useFocusEffect(
         useCallback(() => {
@@ -22,7 +22,7 @@ const Profile = () => {
                     if (loggedInUsername) {
                         const savedUser = await AsyncStorage.getItem(loggedInUsername);
 
-                        console.log(savedUser);
+                        // console.log(savedUser);
                         if (savedUser) setUser(JSON.parse(savedUser));
                     }
 
