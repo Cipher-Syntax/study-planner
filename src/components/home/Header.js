@@ -1,86 +1,60 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Calendar, Bell } from 'lucide-react-native';
-import { useRouter, useFocusEffect } from 'expo-router'; // ✅ import useFocusEffect
+import { useRouter, useFocusEffect } from 'expo-router';
 
-const Header = () => {
+const PRIMARY_COLOR = "#12bab4";
+
+const Header = ({ hasOverdue }) => { 
     const router = useRouter();
-    const [hasOverdue, setHasOverdue] = useState(false);
     const [user, setUser] = useState(null);
 
-    const checkOverdue = async () => {
-        const saved = await AsyncStorage.getItem('TASKS');
-        if (saved) {
-            const allTasks = JSON.parse(saved);
-            const today = new Date().toISOString().split('T')[0];
-            const overdue = allTasks.filter(t => t.deadline < today && !t.isCompleted);
-            setHasOverdue(overdue.length > 0);
-        } else {
-            setHasOverdue(false);
-        }
-    };
-
-    useFocusEffect(
-        useCallback(() => {
-            const loadData = async () => {
-                try{
-                    const loggedInUsername = await AsyncStorage.getItem('loggedInUser');
-                    if(loggedInUsername){
-                        const saveUser = await AsyncStorage.getItem(loggedInUsername)
-
-                        if(saveUser) setUser(JSON.parse(saveUser));
-                    }
-                }
-                catch(error){
-                    console.log('Error fetching user: ', error);
-                }
+    const loadUserData = async () => {
+        try {
+            const loggedInUsername = await AsyncStorage.getItem('loggedInUser');
+            if (loggedInUsername) {
+                const savedUser = await AsyncStorage.getItem(loggedInUsername);
+                if (savedUser) setUser(JSON.parse(savedUser));
             }
-
-            loadData();
-        }, [])
-    )
+        }
+        catch (error) {
+            console.log('Error fetching user: ', error);
+        }
+    }
 
     useFocusEffect(
         useCallback(() => {
-            checkOverdue();
+            loadUserData();
         }, [])
     );
 
     const today = new Date();
-    const day = today.getDate().toString().padStart(2, "0");
-    const month = today.toLocaleString("en-US", { month: "long" });
-    const year = today.getFullYear();
+    const dateOptions = { day: "numeric", month: "long", year: "numeric" };
+    const formattedDate = today.toLocaleDateString("en-US", dateOptions);
 
     return (
-        <View style={{ width: "100%", marginHorizontal: "auto" }}>
-            <View style={{ flexDirection: "row", gap: 10, alignItems: "center" }}>
-                <Calendar color="#12bab4" />
-                <Text>{`${day}, ${month} ${year}`}</Text>
+        <View style={styles.container}>
+            <View style={styles.dateContainer}>
+                <Calendar color={PRIMARY_COLOR} size={18} />
+                <Text style={styles.dateText}>{formattedDate}</Text>
             </View>
 
-            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                <View>
-                    <Text style={{ fontSize: 30, marginTop: 10, fontWeight: 900, letterSpacing: 3 }}>
-                        Hey, {user?.username || "No Name"} 👋
+            <View style={styles.bottomRow}>
+                <View style={styles.greetingContainer}>
+                    <Text style={styles.greetingText} numberOfLines={1}>
+                        Hey, {user?.username || "Student"} 👋
                     </Text>
-                    <Text>Organize your tasks, boost your productivity</Text>
+                    <Text style={styles.subtitle}>Organize your tasks, boost your productivity.</Text>
                 </View>
 
-                <TouchableOpacity onPress={() => router.push('notification')} style={{ position: 'relative' }}>
-                    <Bell size={30} color="#12bab4" />
+                <TouchableOpacity 
+                    onPress={() => router.push('notification')} 
+                    style={styles.notificationButton}
+                >
+                    <Bell size={28} color={PRIMARY_COLOR} />
                     {hasOverdue && (
-                        <View
-                            style={{
-                                position: 'absolute',
-                                top: 2,
-                                right: 2,
-                                width: 10,
-                                height: 10,
-                                borderRadius: 5,
-                                backgroundColor: 'red',
-                            }}
-                        />
+                        <View style={styles.badge} />
                     )}
                 </TouchableOpacity>
             </View>
@@ -89,3 +63,57 @@ const Header = () => {
 };
 
 export default Header;
+
+const styles = StyleSheet.create({
+    container: { 
+        width: "100%", 
+        marginBottom: 20,
+        marginTop: 20
+    },
+    dateContainer: { 
+        flexDirection: "row", 
+        gap: 8, 
+        alignItems: "center",
+        marginBottom: 5,
+    },
+    dateText: {
+        fontSize: 14,
+        color: '#6b7280',
+        fontWeight: '500'
+    },
+    bottomRow: { 
+        flexDirection: "row", 
+        justifyContent: "space-between", 
+        alignItems: 'flex-start',
+    },
+    greetingContainer: {
+        flex: 1,
+        marginRight: 10,
+    },
+    greetingText: { 
+        fontSize: 28, 
+        fontWeight: '900', 
+        letterSpacing: 0.5,
+        color: '#1f2937',
+    },
+    subtitle: {
+        fontSize: 14,
+        color: '#4b5563',
+        marginTop: 2,
+    },
+    notificationButton: { 
+        position: 'relative', 
+        padding: 5,
+    },
+    badge: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: '#ef4444',
+        borderWidth: 2,
+        borderColor: '#f9fafb',
+    }
+});

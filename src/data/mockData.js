@@ -4,7 +4,7 @@ export const MOCK_TASKS = [
         title: 'Finish Math Homework 5.2',
         isCompleted: false,
         tag: 'Homework',
-        deadline: "2025-11-01",
+        deadline: "2025-11-08", 
         notes: 'Remember to show all work for questions 3 and 5. Focus on quadratic equations.'
     },
     {
@@ -12,7 +12,7 @@ export const MOCK_TASKS = [
         title: 'Study for Chemistry Midterm',
         isCompleted: false,
         tag: 'Exam',
-        deadline: "2025-11-02",
+        deadline: "2025-11-09", 
         notes: 'Focus on chapters 4-6. Review lab notes from the titration experiment.'
     },
     {
@@ -20,7 +20,7 @@ export const MOCK_TASKS = [
         title: 'Start History Project Outline',
         isCompleted: true,
         tag: 'Project',
-        deadline: "2025-11-03",
+        deadline: "2025-11-10", 
         notes: 'Gather sources and create the main bullet points for the presentation.'
     },
     {
@@ -28,7 +28,7 @@ export const MOCK_TASKS = [
         title: 'Read Chapter 3 of English Lit',
         isCompleted: false,
         tag: 'Homework',
-        deadline: "2025-11-04",
+        deadline: "2025-11-11", 
         notes: "Take notes on the main character's development."
     },
     {
@@ -36,7 +36,7 @@ export const MOCK_TASKS = [
         title: 'Physics Lab Report',
         isCompleted: false,
         tag: 'Project',
-        deadline: "2025-11-05",
+        deadline: "2025-11-12",
         notes: 'Write up the findings from the kinematics lab. Include all graphs.'
     },
     {
@@ -44,7 +44,7 @@ export const MOCK_TASKS = [
         title: 'Finalize CS Group Presentation',
         isCompleted: false,
         tag: 'Project',
-        deadline: "2025-11-06",
+        deadline: "2025-11-12",
         notes: 'Merge all slides and practice the script with the team.'
     },
     {
@@ -52,7 +52,7 @@ export const MOCK_TASKS = [
         title: 'Spanish Vocabulary Quiz',
         isCompleted: false,
         tag: 'Exam',
-        deadline: "2025-11-07",
+        deadline: "2025-11-13",
         notes: 'Review all verbs from Unit 5.'
     },
     {
@@ -60,7 +60,7 @@ export const MOCK_TASKS = [
         title: 'Math Homework 5.3',
         isCompleted: false,
         tag: 'Homework',
-        deadline: "2025-11-08",
+        deadline: "2025-11-14",
         notes: 'Work on polynomial equations.'
     },
     {
@@ -68,7 +68,7 @@ export const MOCK_TASKS = [
         title: 'Biology Lab Report',
         isCompleted: false,
         tag: 'Project',
-        deadline: "2025-11-09",
+        deadline: "2025-11-15",
         notes: 'Document the microscope observations clearly.'
     },
     {
@@ -76,7 +76,7 @@ export const MOCK_TASKS = [
         title: 'History Essay Draft',
         isCompleted: true,
         tag: 'Homework',
-        deadline: "2025-11-10",
+        deadline: "2025-11-16",
         notes: 'Write about the causes of World War I.'
     },
     {
@@ -84,7 +84,7 @@ export const MOCK_TASKS = [
         title: 'Chemistry Assignment',
         isCompleted: false,
         tag: 'Homework',
-        deadline: "2025-11-11",
+        deadline: "2025-11-17",
         notes: 'Complete the worksheet on acids and bases.'
     },
     {
@@ -92,7 +92,7 @@ export const MOCK_TASKS = [
         title: 'Math Quiz Preparation',
         isCompleted: false,
         tag: 'Exam',
-        deadline: "2025-11-12",
+        deadline: "2025-11-18",
         notes: 'Review algebra and geometry chapters.'
     },
     {
@@ -100,7 +100,7 @@ export const MOCK_TASKS = [
         title: 'English Lit Presentation',
         isCompleted: false,
         tag: 'Project',
-        deadline: "2025-11-13",
+        deadline: "2025-11-19",
         notes: 'Prepare slides on Shakespearean plays.'
     },
     {
@@ -108,7 +108,7 @@ export const MOCK_TASKS = [
         title: 'Physics Problem Set',
         isCompleted: false,
         tag: 'Homework',
-        deadline: "2025-11-14",
+        deadline: "2025-11-20",
         notes: 'Solve kinematics and dynamics problems.'
     },
     {
@@ -116,7 +116,7 @@ export const MOCK_TASKS = [
         title: 'CS Project Proposal',
         isCompleted: false,
         tag: 'Project',
-        deadline: "2025-11-15",
+        deadline: "2025-11-21",
         notes: 'Submit the outline for the group project.'
     },
     {
@@ -124,7 +124,7 @@ export const MOCK_TASKS = [
         title: 'History Quiz',
         isCompleted: false,
         tag: 'Exam',
-        deadline: "2025-11-16",
+        deadline: "2025-11-22",
         notes: 'Prepare notes on the American Revolution.'
     },
     {
@@ -132,7 +132,7 @@ export const MOCK_TASKS = [
         title: 'Math Practice Test',
         isCompleted: true,
         tag: 'Exam',
-        deadline: "2025-11-17",
+        deadline: "2025-11-23",
         notes: 'Complete all sample problems.'
     },
     {
@@ -140,7 +140,7 @@ export const MOCK_TASKS = [
         title: 'English Essay',
         isCompleted: false,
         tag: 'Homework',
-        deadline: "2025-11-18",
+        deadline: "2025-11-24",
         notes: 'Write a 500-word essay on modern poetry.'
     },
     {
@@ -148,7 +148,7 @@ export const MOCK_TASKS = [
         title: 'Biology Quiz',
         isCompleted: false,
         tag: 'Exam',
-        deadline: "2025-11-19",
+        deadline: "2025-11-25",
         notes: 'Study photosynthesis and cellular respiration.'
     },
     {
@@ -156,15 +156,7 @@ export const MOCK_TASKS = [
         title: 'Finalize CS Report',
         isCompleted: false,
         tag: 'Project',
-        deadline: "2025-11-20",
+        deadline: "2025-11-26",
         notes: 'Compile all group work into the final report.'
     },
-    {
-        id: '21',
-        title: 'Finalize CS Report',
-        isCompleted: false,
-        tag: 'Project',
-        deadline: "2025-11-20",
-        notes: 'Compile all group work into the final report.'
-    }
 ];
