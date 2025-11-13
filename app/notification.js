@@ -127,7 +127,6 @@ const Notification = () => {
                                 {task.notes ? <Text style={styles.taskNotes} numberOfLines={2}>{task.notes}</Text> : null}
                                 
 
-                                {/* Action Buttons */}
                                 <View style={styles.actionRow}>
                                     <TouchableOpacity 
                                         style={styles.completeButton}
